@@ -16,13 +16,23 @@
         <span>Coolection</span>
     </div>
 
-    <div id="main" class="center">
-        <el-input
-            placeholder="Add Link or Search"
-            icon="search"
-            v-model="input"
-            :on-icon-click="handleIconClick">
-        </el-input>
+    <div id="main">
+        <div class="input center">
+            <el-input
+                placeholder="Add Link or Search"
+                icon="search"
+                v-model="input"
+                :on-icon-click="handleIconClick">
+            </el-input>
+        </div>
+
+        <transition name="mainbox-slide">
+            <div id="mainbox" v-if="mainboxShow">
+                <div id="results">
+                    <span class="results-header">Search results for '{{input}}'...</span>
+                </div>
+            </div>
+        </transition>
     </div>
 
     <script src="js/axios.min.js"></script>

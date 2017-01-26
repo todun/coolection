@@ -34,12 +34,18 @@ body {
 }
 
 /* Main */
-#main>.el-input {
-	width: 70%;
-	margin-top: 5%;
+.input {
+	width: 100%;
+	z-index: 9999;
+	position: absolute;
+	bottom: 67%;
 }
 
-#main .el-input__inner {
+.input>.el-input {
+	width: 70%;
+}
+
+.input .el-input__inner {
 	height: 50px;
 	border-radius: 20px;
 	font-size: 1.25em;
@@ -49,7 +55,41 @@ body {
 	border: 1px solid #ecf0f1;
 }
 
-#main .el-input__icon {
+.input .el-input__icon {
 	font-size: 1.25em;
 	padding: 0 10px;
+}
+
+#mainbox {
+	display: block;
+	background: rgba(255,255,255,0.5);
+	bottom: 0;
+	position: absolute;
+	width: 76%;
+	margin-left: 12%;
+	height: 80%;
+	z-index: 1;
+	border-top-left-radius: 20px;
+	border-top-right-radius: 20px;
+}
+
+#results {
+	margin: 11% 4%;
+}
+
+.results-header {
+	font-size: 1.5em;
+	font-weight: 200;
+}
+
+/* Mainbox Slide Animation */
+.mainbox-slide-enter-active {
+	transition: all .5s ease;
+}
+.mainbox-slide-leave-active {
+	transition: all .5s ease;
+}
+.mainbox-slide-enter, .mainbox-slide-leave-to {
+	transform: translateY(5%);
+	opacity: 0;
 }

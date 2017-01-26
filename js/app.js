@@ -16,28 +16,28 @@ var main = new Vue({
 	el: '#main',
 	data: {
 		input: '',
-		timeout: null
+		timeout: null,
+		mainboxShow: false
 	},
 	watch: {
 		input: function(val) {
 			if (val) {
-				// slide up
+				this.mainboxShow = true;
 			} else {
-				// slide down
+				this.mainboxShow = false;
 			}
 
 			clearTimeout(this.timeout);
 			this.timeout = setTimeout(() => {
-				console.log(val);
-				index.search(val, function searchDone(err, content) {
-					console.log(content);
-					content.hits.forEach(function(item) {
-						// results.push({
-						// 	"value": item.name,
-						// 	"link": "#"
-						// })
-					})
-				});
+				// index.search(val, function searchDone(err, content) {
+				// 	console.log(content);
+				// 	content.hits.forEach(function(item) {
+				// 		results.push({
+				// 			"value": item.name,
+				// 			"link": "#"
+				// 		})
+				// 	})
+				// });
 			}, 300)
 		}
 	},
