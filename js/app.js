@@ -17,7 +17,9 @@ var main = new Vue({
 	data: {
 		input: '',
 		timeout: null,
-		mainboxShow: false
+		mainboxShow: false,
+		addBoxShow: false,
+		resultBoxShow: false
 	},
 	watch: {
 		input: function(val) {
@@ -25,10 +27,19 @@ var main = new Vue({
 				this.mainboxShow = true;
 			} else {
 				this.mainboxShow = false;
+				this.addBoxShow = false;
+				this.resultBoxShow = false;
 			}
 
 			clearTimeout(this.timeout);
 			this.timeout = setTimeout(() => {
+				if (this.input.substring(0,7) === 'http://' || this.input.substring(0,8) === 'https://') {
+					this.addBoxShow = true;
+					this.resultBoxShow = false;
+				} else {
+					this.resultBoxShow = true;
+					this.addBoxShow = false;
+				}
 				// index.search(val, function searchDone(err, content) {
 				// 	console.log(content);
 				// 	content.hits.forEach(function(item) {

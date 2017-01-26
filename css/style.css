@@ -73,11 +73,11 @@ body {
 	border-top-right-radius: 20px;
 }
 
-#results {
+#results, #add {
 	margin: 11% 4%;
 }
 
-.results-header {
+.results-header, .add-header {
 	font-size: 1.5em;
 	font-weight: 200;
 }
