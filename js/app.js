@@ -19,37 +19,43 @@ var main = new Vue({
 		timeout: null,
 		mainboxShow: false,
 		addBoxShow: false,
-		resultBoxShow: false
+		resultBoxShow: false,
+		searchResults: []
 	},
 	watch: {
 		input: function(val) {
 			if (val) {
 				this.mainboxShow = true;
+
+				clearTimeout(this.timeout);
+				this.timeout = setTimeout(() => {
+					if (this.input.substring(0,7) === 'http://' || this.input.substring(0,8) === 'https://') {
+						this.addBoxShow = true;
+						this.resultBoxShow = false;
+
+						// Run entity extraction algorithm and index item
+					} else {
+						this.resultBoxShow = true;
+						this.addBoxShow = false;
+
+						// Run search algorithm and return results
+						index.search(val, (err, content) => {
+							this.searchResults = [];
+							console.log(content);
+							content.hits.forEach(item => {
+								this.searchResults.push({
+									"value": item.name,
+									"link": "#"
+								})
+							})
+						});
+					}
+				}, 300)
 			} else {
 				this.mainboxShow = false;
 				this.addBoxShow = false;
 				this.resultBoxShow = false;
 			}
-
-			clearTimeout(this.timeout);
-			this.timeout = setTimeout(() => {
-				if (this.input.substring(0,7) === 'http://' || this.input.substring(0,8) === 'https://') {
-					this.addBoxShow = true;
-					this.resultBoxShow = false;
-				} else {
-					this.resultBoxShow = true;
-					this.addBoxShow = false;
-				}
-				// index.search(val, function searchDone(err, content) {
-				// 	console.log(content);
-				// 	content.hits.forEach(function(item) {
-				// 		results.push({
-				// 			"value": item.name,
-				// 			"link": "#"
-				// 		})
-				// 	})
-				// });
-			}, 300)
 		}
 	},
 	methods: {
