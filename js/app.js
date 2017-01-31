@@ -20,7 +20,8 @@ var main = new Vue({
 		mainboxShow: false,
 		addBoxShow: false,
 		resultBoxShow: false,
-		searchResults: []
+		searchResults: [],
+		addTitle: ''
 	},
 	watch: {
 		input: function(val) {
@@ -32,6 +33,14 @@ var main = new Vue({
 					if (this.input.substring(0,7) === 'http://' || this.input.substring(0,8) === 'https://') {
 						this.addBoxShow = true;
 						this.resultBoxShow = false;
+						this.addTitle = '';
+
+						axios.get('http://coolection.cyris.co/get-title/?url=' + this.input)
+						.then(response => {
+							if (response.data.substring(0,21) !== '<br />\n<b>Warning</b>') {
+								this.addTitle = response.data;
+							}
+						})
 
 						// Run entity extraction algorithm and index item
 					} else {
@@ -45,12 +54,12 @@ var main = new Vue({
 							content.hits.forEach(item => {
 								this.searchResults.push({
 									"value": item.name,
-									"link": "#"
+									"url": "#"
 								})
 							})
 						});
 					}
-				}, 300)
+				}, 500)
 			} else {
 				this.mainboxShow = false;
 				this.addBoxShow = false;

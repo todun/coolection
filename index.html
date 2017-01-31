@@ -31,7 +31,7 @@
                 <div id="results" v-if="resultBoxShow">
                     <span class="results-header">Search results for '{{input}}'...</span>
                     <div v-for="item in searchResults">
-                        <a :href="item.link">
+                        <a :href="item.url" target="_blank">
                             <el-card>
                             {{item.value}}
                             </el-card>
@@ -40,6 +40,9 @@
                 </div>
                 <div id="add" v-if="addBoxShow">
                     <span class="add-header">Add '{{input}}' into the database...</span>
+                    <el-card>
+                    {{addTitle}}
+                    </el-card>
                 </div>
             </div>
         </transition>
