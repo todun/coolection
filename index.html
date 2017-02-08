@@ -41,7 +41,28 @@
                 <div id="add" v-if="addBoxShow">
                     <span class="add-header">Add '{{input}}' into the database...</span>
                     <el-card>
-                    {{addTitle}}
+                        <span class="website-title">{{addTitle}}</span>
+                        <el-button v-if="addTitle !== 'Fetching website...' && addTitle !== 'Error fetching website'" type="info submit-btn">Add</el-button>
+                        <div id="tags" v-if="tagsLabel === 'TAGS'">
+                            <span class="tags-header-label">{{tagsLabel}}</span>
+                            <el-tag
+                                v-for="tag in tags"
+                                :closable="true"
+                                @close="removeTag(tag)"
+                            >
+                            {{tag}}
+                            </el-tag>
+                            <el-input
+                                class="input-new-tag"
+                                v-if="inputTagVisible"
+                                v-model="inputTagValue"
+                                size="mini"
+                                @keyup.enter.native="handleInputTagConfirm"
+                                @blur="handleInputTagConfirm"
+                            >
+                            </el-input>
+                            <el-button v-else class="button-new-tag" size="small" @click="showInputTag">+ Add Tag</el-button>
+                        </div>
                     </el-card>
                 </div>
             </div>

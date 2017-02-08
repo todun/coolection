@@ -97,6 +97,52 @@ body {
 	/* hover animation */
 }
 
+.website-title {
+	font-weight: 600;
+	font-size: 1.25em;
+}
+
+.submit-btn {
+	float: right;
+}
+
+.tags-header-label {
+	display: block;
+	font-size: 0.75em;
+	font-weight: 300;
+	padding: 1.5% 0 0.5% 0;
+	letter-spacing: 0.75px;
+}
+
+.el-tag {
+	background-color: #3498db;
+}
+
+.el-tag+.el-tag {
+	margin-left: 10px;
+}
+
+.el-tag .el-icon-close:hover {
+	color: #3498db;
+}
+
+.button-new-tag {
+	margin-left: 10px;
+	height: 24px;
+	line-height: 22px;
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
+.input-new-tag {
+	width: 78px;
+	margin-left: 10px;
+}
+
+.input-new-tag .el-input__inner {
+	height: 24px
+}
+
 /* Mainbox Slide Animation */
 .mainbox-slide-enter-active {
 	transition: all .5s ease;

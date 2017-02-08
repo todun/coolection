@@ -21,7 +21,11 @@ var main = new Vue({
 		addBoxShow: false,
 		resultBoxShow: false,
 		searchResults: [],
-		addTitle: ''
+		addTitle: 'Fetching website...',
+		tagsLabel: '',
+		tags: [],
+		inputTagVisible: false,
+		inputTagValue: ''
 	},
 	watch: {
 		input: function(val) {
@@ -33,16 +37,20 @@ var main = new Vue({
 					if (this.input.substring(0,7) === 'http://' || this.input.substring(0,8) === 'https://') {
 						this.addBoxShow = true;
 						this.resultBoxShow = false;
-						this.addTitle = '';
+						this.addTitle = 'Fetching website...';
+						this.tagsLabel = '';
 
 						axios.get('http://coolection.cyris.co/get-title/?url=' + this.input)
-						.then(response => {
-							if (response.data.substring(0,21) !== '<br />\n<b>Warning</b>') {
-								this.addTitle = response.data;
+						.then(titleResponse => {
+							if (titleResponse.data.substring(0,21) !== '<br />\n<b>Warning</b>') {
+								this.addTitle = titleResponse.data;
+								this.tagsLabel = 'GENERATING TAGS...';
+
+								// Run entity extraction algorithm and index item
+							} else {
+								this.addTitle = 'Error fetching website';
 							}
 						})
-
-						// Run entity extraction algorithm and index item
 					} else {
 						this.resultBoxShow = true;
 						this.addBoxShow = false;
@@ -70,6 +78,20 @@ var main = new Vue({
 	methods: {
 		handleIconClick(e) {
 			console.log(e);
+		},
+		showInputTag() {
+			this.inputTagVisible = true;
+		},
+		removeTag(tag) {
+			this.tags.splice(this.tags.indexOf(tag), 1);
+		},
+		handleInputTagConfirm() {
+			let inputTagValue = this.inputTagValue;
+			if (inputTagValue) {
+				this.tags.push(inputTagValue);
+			}
+			this.inputTagVisible = false;
+			this.inputTagValue = '';
 		}
 	}
 })
