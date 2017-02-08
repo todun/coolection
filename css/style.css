@@ -110,16 +110,14 @@ body {
 	display: block;
 	font-size: 0.75em;
 	font-weight: 300;
-	padding: 1.5% 0 0.5% 0;
+	padding: 15px 0 7.5px 0;
 	letter-spacing: 0.75px;
 }
 
 .el-tag {
 	background-color: #3498db;
-}
-
-.el-tag+.el-tag {
-	margin-left: 10px;
+	margin-right: 10px;
+	margin-bottom: 7.5px;
 }
 
 .el-tag .el-icon-close:hover {
@@ -127,7 +125,6 @@ body {
 }
 
 .button-new-tag {
-	margin-left: 10px;
 	height: 24px;
 	line-height: 22px;
 	padding-top: 0;

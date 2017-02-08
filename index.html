@@ -43,7 +43,7 @@
                     <el-card>
                         <span class="website-title">{{addTitle}}</span>
                         <el-button v-if="addTitle !== 'Fetching website...' && addTitle !== 'Error fetching website'" type="info submit-btn">Add</el-button>
-                        <div id="tags" v-if="tagsLabel === 'TAGS'">
+                        <div id="tags" v-if="tagsLabel !== ''">
                             <span class="tags-header-label">{{tagsLabel}}</span>
                             <el-tag
                                 v-for="tag in tags"
@@ -61,7 +61,7 @@
                                 @blur="handleInputTagConfirm"
                             >
                             </el-input>
-                            <el-button v-else class="button-new-tag" size="small" @click="showInputTag">+ Add Tag</el-button>
+                            <el-button v-else v-if="tagsLabel === 'TAGS'" class="button-new-tag" size="small" @click="showInputTag">+ Add Tag</el-button>
                         </div>
                     </el-card>
                 </div>

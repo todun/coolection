@@ -5,6 +5,7 @@ var menu = new Vue({
 // Initialize Algolia SDK
 axios.get('/config.json')
 .then(function (response) {
+	token = response.data.token;
 	client = algoliasearch(response.data.applicationID, response.data.apiKey);
 	index = client.initIndex('getstarted_actors');
 })
@@ -31,6 +32,7 @@ var main = new Vue({
 		input: function(val) {
 			if (val) {
 				this.mainboxShow = true;
+				this.tags = [];
 
 				clearTimeout(this.timeout);
 				this.timeout = setTimeout(() => {
@@ -47,6 +49,14 @@ var main = new Vue({
 								this.tagsLabel = 'GENERATING TAGS...';
 
 								// Run entity extraction algorithm and index item
+								axios.get('https://api.dandelion.eu/datatxt/nex/v1/?url=' + this.input + '&min_confidence=0.5&social=False&include=image%2Cabstract%2Ctypes%2Ccategories%2Clod&country=-1&token=' + token)
+								.then(entityResponse => {
+									this.tagsLabel = 'TAGS';
+									var entities = entityResponse.data.annotations;
+									entities.forEach(entity => {
+										this.tags.push(entity.title);
+									})
+								})
 							} else {
 								this.addTitle = 'Error fetching website';
 							}
