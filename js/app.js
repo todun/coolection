@@ -192,7 +192,7 @@ var main = new Vue({
 				} else {
 					swal({
 						title: "Woohoo!",
-						text: "Your link has been successfully added."
+						text: "Your link has been successfully added.",
 						type: "success",
 						showConfirmButton: false,
 						timer: 2000
