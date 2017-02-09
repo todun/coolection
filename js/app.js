@@ -3,15 +3,15 @@ var menu = new Vue({
 })
 
 // Initialize Algolia SDK
-axios.get('/config.json')
-.then(function (response) {
-	token = response.data.token;
-	client = algoliasearch(response.data.applicationID, response.data.apiKey);
-	index = client.initIndex('chris');
-})
-.catch(function (error) {
-	console.log(error);
-});
+// axios.get('/config.json')
+// .then(function (response) {
+// 	token = response.data.token;
+// 	client = algoliasearch(response.data.applicationID, response.data.apiKey);
+// 	index = client.initIndex('chris');
+// })
+// .catch(function (error) {
+// 	console.log(error);
+// });
 
 var main = new Vue({
 	el: '#main',
@@ -31,7 +31,15 @@ var main = new Vue({
 		authenticated: false,
 		secretThing: '',
 		lock: new Auth0Lock('rD5ao9chGoZwgA2GaV7mBe4JKuPSZZ6M', 'chriswong.auth0.com', {
-			closable: false
+			closable: false,
+			languageDictionary: {
+				title: 'Login'
+			},
+			theme: {
+				labeledSubmitButton: false,
+				logo: '',
+				primaryColor: '',
+			}
 		})
 	},
 	mounted: function() {
@@ -39,11 +47,15 @@ var main = new Vue({
 
 		if (!this.authenticated)
 			this.login();
+		else {
+			token = JSON.stringify(profile).app_metadata.token;
+			client = algoliasearch(JSON.stringify(profile).app_metadata.applicationID, JSON.stringify(profile).app_metadata.apiKey);
+			index = client.initIndex(JSON.stringify(profile).email);
+		}
 
 		this.lock.on('authenticated', (authResult) => {
-			console.log('authenticated');
 			localStorage.setItem('id_token', authResult.idToken);
-			this.lock.getProfile(authResult.idToken, (error, profile) => {
+			this.lock.getUserInfo(authResult.accessToken, (error, profile) => {
 				if (error) {
 					// Handle error
 					return;
@@ -52,11 +64,15 @@ var main = new Vue({
 				localStorage.setItem('profile', JSON.stringify(profile));
 
 				this.authenticated = true;
+
+				token = JSON.stringify(profile).app_metadata.token;
+				client = algoliasearch(JSON.stringify(profile).app_metadata.applicationID, JSON.stringify(profile).app_metadata.apiKey);
+				index = client.initIndex(JSON.stringify(profile).email);
 			});
 		});
 
 		this.lock.on('authorization_error', (error) => {
-		// handle error when authorizaton fails
+			// handle error when authorizaton fails
 		});
 	},
 	watch: {
@@ -88,7 +104,7 @@ var main = new Vue({
 		},
 		authenticated: function(val) {
 			if (!val)
-				login();
+				this.login();
 		}
 	},
 	methods: {
@@ -129,7 +145,7 @@ var main = new Vue({
 			})
 		},
 		search() {
-			index.search(val, (err, content) => {
+			index.search(this.input, (err, content) => {
 				this.searchResults = [];
 				console.log(content);
 				content.hits.forEach(item => {
