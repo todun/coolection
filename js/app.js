@@ -65,8 +65,8 @@ var main = new Vue({
 
 				this.authenticated = true;
 
-				token = JSON.stringify(profile).app_metadata.token;
-				client = algoliasearch(JSON.stringify(profile).app_metadata.applicationID, JSON.stringify(profile).app_metadata.apiKey);
+				token = JSON.stringify(profile).appMetadata.token;
+				client = algoliasearch(JSON.stringify(profile).appMetadata.applicationID, JSON.stringify(profile).appMetadata.apiKey);
 				index = client.initIndex(JSON.stringify(profile).email);
 			});
 		});
