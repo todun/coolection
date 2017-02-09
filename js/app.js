@@ -123,7 +123,7 @@ var main = new Vue({
 			console.log(e);
 		},
 		getTitle() {
-			axios.get('http://coolection.cyris.co/get-title/?url=' + this.input)
+			axios.get('/get-title/?url=' + this.input)
 				.then(titleResponse => {
 					if (titleResponse.data.substring(0,21) !== '<br />\n<b>Warning</b>') {
 						this.addTitle = titleResponse.data;
