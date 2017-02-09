@@ -150,8 +150,8 @@ var main = new Vue({
 				console.log(content);
 				content.hits.forEach(item => {
 					this.searchResults.push({
-						"value": item.name,
-						"url": "#"
+						"title": item.title,
+						"url": item.url
 					})
 				})
 			});
