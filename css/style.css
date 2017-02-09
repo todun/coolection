@@ -33,6 +33,17 @@ body {
 	font-weight: 700;
 }
 
+.userpic {
+	height: 35px;
+}
+
+.userpic>img {
+	height: 35px;
+	position: absolute;
+	right: 3%;
+	border-radius: 3px;
+}
+
 /* Main */
 .input {
 	width: 100%;

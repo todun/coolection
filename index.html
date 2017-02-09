@@ -9,14 +9,17 @@
     <link href="https://fonts.googleapis.com/css?family=Titillium+Web:200,300,400,600,700,900" rel="stylesheet">
     <link rel="stylesheet" href="css/element.min.css">
     <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="css/sweetalert.css">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div id="menu" class="center-left">
-        <span>Coolection</span>
-    </div>
-
     <div id="main">
+        <div id="menu" class="center-left">
+            <span>Coolection</span>
+            <div v-if="userpic" class="userpic">
+                <img :src="userpic">
+            </div>
+        </div>
         <div class="input center" v-if="authenticated">
             <el-input
                 placeholder="Add Link or Search"
@@ -74,6 +77,7 @@
     <script src="js/element.min.js"></script>
     <script src="js/algoliasearch.min.js"></script>
     <script src="https://cdn.auth0.com/js/lock/10.9.1/lock.min.js"></script>
+    <script src="js/sweetalert.min.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>

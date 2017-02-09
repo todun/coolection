@@ -1,18 +1,3 @@
-var menu = new Vue({
-	el: '#menu'
-})
-
-// Initialize Algolia SDK
-// axios.get('/config.json')
-// .then(function (response) {
-// 	token = response.data.token;
-// 	client = algoliasearch(response.data.applicationID, response.data.apiKey);
-// 	index = client.initIndex('chris');
-// })
-// .catch(function (error) {
-// 	console.log(error);
-// });
-
 var main = new Vue({
 	el: '#main',
 	data: {
@@ -32,6 +17,7 @@ var main = new Vue({
 		secretThing: '',
 		lock: new Auth0Lock('rD5ao9chGoZwgA2GaV7mBe4JKuPSZZ6M', 'chriswong.auth0.com', {
 			closable: false,
+			autoclose: true,
 			languageDictionary: {
 				title: 'Login'
 			},
@@ -39,36 +25,37 @@ var main = new Vue({
 				labeledSubmitButton: false,
 				logo: '',
 				primaryColor: '',
+			},
+			auth: {
+				redirectUrl: ''
 			}
-		})
+		}),
+		username: '',
+		userpic: ''
 	},
 	mounted: function() {
 		this.authenticated = this.checkAuth();
 
-		if (!this.authenticated)
-			this.login();
-		else {
-			token = JSON.parse(localStorage.getItem('profile')).appMetadata.token;
-			client = algoliasearch(JSON.parse(localStorage.getItem('profile')).appMetadata.applicationID, JSON.parse(localStorage.getItem('profile')).appMetadata.apiKey);
-			index = client.initIndex(JSON.parse(localStorage.getItem('profile')).email);
-		}
-
 		this.lock.on('authenticated', (authResult) => {
 			localStorage.setItem('id_token', authResult.idToken);
-			this.lock.getUserInfo(authResult.accessToken, (error, profile) => {
-				if (error) {
-					// Handle error
-					return;
-				}
-				// Set the token and user profile in local storage
-				localStorage.setItem('profile', JSON.stringify(profile));
+			localStorage.setItem('accessToken', authResult.accessToken);
+			// this.lock.getUserInfo(authResult.accessToken, (error, profile) => {
+			// 	if (error) {
+			// 		// Handle error
+			// 		return;
+			// 	}
+			// 	// Set the token and user profile in local storage
+			// 	localStorage.setItem('profile', JSON.stringify(profile));
 
-				this.authenticated = true;
+			// 	this.authenticated = true;
 
-				token = JSON.parse(profile).appMetadata.token;
-				client = algoliasearch(JSON.parse(profile).appMetadata.applicationID, JSON.parse(profile).appMetadata.apiKey);
-				index = client.initIndex(JSON.parse(profile).email);
-			});
+			// 	token = JSON.parse(profile).appMetadata.token;
+			// 	client = algoliasearch(JSON.parse(profile).appMetadata.applicationID, JSON.parse(profile).appMetadata.apiKey);
+			// 	index = client.initIndex(JSON.parse(profile).email);
+			// 	this.userpic = JSON.parse(profile).pictureLarge;
+			// });
+			this.getUserInfo();
+			this.lock.hide();
 		});
 
 		this.lock.on('authorization_error', (error) => {
@@ -117,7 +104,51 @@ var main = new Vue({
 			this.authenticated = false;
 		},
 		checkAuth() {
+			if (!!!localStorage.getItem('id_token'))
+				this.login();
+			else {
+				this.restoreSession();
+			}
+
 			return !!localStorage.getItem('id_token');
+		},
+		restoreSession() {
+			if (JSON.parse(localStorage.getItem('profile')).hasOwnProperty('appMetadata')) {
+				token = JSON.parse(localStorage.getItem('profile')).appMetadata.token;
+				client = algoliasearch(JSON.parse(localStorage.getItem('profile')).appMetadata.applicationID, JSON.parse(localStorage.getItem('profile')).appMetadata.apiKey);
+				index = client.initIndex(JSON.parse(localStorage.getItem('profile')).email);
+				this.userpic = JSON.parse(localStorage.getItem('profile')).pictureLarge;
+			} else {
+				this.getUserInfo();
+			}
+		},
+		getUserInfo() {
+			this.lock.getUserInfo(localStorage.getItem('accessToken'), (error, profile) => {
+				if (error) {
+					// Handle error
+					return;
+				}
+				// Set the token and user profile in local storage
+				localStorage.setItem('profile', JSON.stringify(profile));
+
+				this.authenticated = true;
+				
+				if (profile.hasOwnProperty('appMetadata')) {
+					token = profile.appMetadata.token;
+					client = algoliasearch(profile.appMetadata.applicationID, profile.appMetadata.apiKey);
+					index = client.initIndex(profile.email);
+				} else {
+					swal({
+						title: 'Hold on...',
+						text: 'Account is currently pending approval. Check back soon!',
+						type: 'info',
+						allowEscapeKey: false,
+						showConfirmButton: false
+					})
+				}
+
+				this.userpic = profile.pictureLarge;
+			});
 		},
 		handleIconClick(e) {
 			console.log(e);
