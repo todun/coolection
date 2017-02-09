@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>Coolection</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
     <link href="https://fonts.googleapis.com/css?family=Titillium+Web:200,300,400,600,700,900" rel="stylesheet">
     <link rel="stylesheet" href="css/element.min.css">
@@ -17,7 +17,7 @@
     </div>
 
     <div id="main">
-        <div class="input center">
+        <div class="input center" v-if="authenticated">
             <el-input
                 placeholder="Add Link or Search"
                 icon="search"
@@ -26,7 +26,7 @@
             </el-input>
         </div>
 
-        <transition name="mainbox-slide">
+        <transition name="mainbox-slide" v-if="authenticated">
             <div id="mainbox" v-if="mainboxShow">
                 <div id="results" v-if="resultBoxShow">
                     <span class="results-header">Search results for '{{input}}'...</span>
@@ -42,7 +42,7 @@
                     <span class="add-header">Add '{{input}}' into the database...</span>
                     <el-card>
                         <span class="website-title">{{addTitle}}</span>
-                        <el-button v-if="addTitle !== 'Fetching website...' && addTitle !== 'Error fetching website'" type="info submit-btn">Add</el-button>
+                        <el-button v-if="addTitle !== 'Fetching website...' && addTitle !== 'Error fetching website'" type="info submit-btn" v-on:click="add" :loading="addLoading">Add</el-button>
                         <div id="tags" v-if="tagsLabel !== ''">
                             <span class="tags-header-label">{{tagsLabel}}</span>
                             <el-tag
@@ -61,7 +61,7 @@
                                 @blur="handleInputTagConfirm"
                             >
                             </el-input>
-                            <el-button v-else v-if="tagsLabel === 'TAGS'" class="button-new-tag" size="small" @click="showInputTag">+ Add Tag</el-button>
+                            <el-button v-if="tagsLabel === 'TAGS' && !inputTagVisible" class="button-new-tag" size="small" @click="showInputTag">+ Add Tag</el-button>
                         </div>
                     </el-card>
                 </div>
@@ -73,6 +73,7 @@
     <script src="js/vue.js"></script>
     <script src="js/element.min.js"></script>
     <script src="js/algoliasearch.min.js"></script>
+    <script src="https://cdn.auth0.com/js/lock/10.9.1/lock.min.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>

@@ -7,7 +7,7 @@ axios.get('/config.json')
 .then(function (response) {
 	token = response.data.token;
 	client = algoliasearch(response.data.applicationID, response.data.apiKey);
-	index = client.initIndex('getstarted_actors');
+	index = client.initIndex('chris');
 })
 .catch(function (error) {
 	console.log(error);
@@ -26,7 +26,38 @@ var main = new Vue({
 		tagsLabel: '',
 		tags: [],
 		inputTagVisible: false,
-		inputTagValue: ''
+		inputTagValue: '',
+		addLoading: false,
+		authenticated: false,
+		secretThing: '',
+		lock: new Auth0Lock('rD5ao9chGoZwgA2GaV7mBe4JKuPSZZ6M', 'chriswong.auth0.com', {
+			closable: false
+		})
+	},
+	mounted: function() {
+		this.authenticated = this.checkAuth();
+
+		if (!this.authenticated)
+			this.login();
+
+		this.lock.on('authenticated', (authResult) => {
+			console.log('authenticated');
+			localStorage.setItem('id_token', authResult.idToken);
+			this.lock.getProfile(authResult.idToken, (error, profile) => {
+				if (error) {
+					// Handle error
+					return;
+				}
+				// Set the token and user profile in local storage
+				localStorage.setItem('profile', JSON.stringify(profile));
+
+				this.authenticated = true;
+			});
+		});
+
+		this.lock.on('authorization_error', (error) => {
+		// handle error when authorizaton fails
+		});
 	},
 	watch: {
 		input: function(val) {
@@ -42,40 +73,11 @@ var main = new Vue({
 						this.addTitle = 'Fetching website...';
 						this.tagsLabel = '';
 
-						axios.get('http://coolection.cyris.co/get-title/?url=' + this.input)
-						.then(titleResponse => {
-							if (titleResponse.data.substring(0,21) !== '<br />\n<b>Warning</b>') {
-								this.addTitle = titleResponse.data;
-								this.tagsLabel = 'GENERATING TAGS...';
-
-								// Run entity extraction algorithm and index item
-								axios.get('https://api.dandelion.eu/datatxt/nex/v1/?url=' + this.input + '&min_confidence=0.5&social=False&include=image%2Cabstract%2Ctypes%2Ccategories%2Clod&country=-1&token=' + token)
-								.then(entityResponse => {
-									this.tagsLabel = 'TAGS';
-									var entities = entityResponse.data.annotations;
-									entities.forEach(entity => {
-										this.tags.push(entity.title);
-									})
-								})
-							} else {
-								this.addTitle = 'Error fetching website';
-							}
-						})
+						this.getTitle();
 					} else {
 						this.resultBoxShow = true;
 						this.addBoxShow = false;
-
-						// Run search algorithm and return results
-						index.search(val, (err, content) => {
-							this.searchResults = [];
-							console.log(content);
-							content.hits.forEach(item => {
-								this.searchResults.push({
-									"value": item.name,
-									"url": "#"
-								})
-							})
-						});
+						this.search();
 					}
 				}, 500)
 			} else {
@@ -83,11 +85,73 @@ var main = new Vue({
 				this.addBoxShow = false;
 				this.resultBoxShow = false;
 			}
+		},
+		authenticated: function(val) {
+			if (!val)
+				login();
 		}
 	},
 	methods: {
+		login() {
+			this.lock.show();
+		},
+		logout() {
+			localStorage.removeItem('id_token');
+			localStorage.removeItem('profile');
+			this.authenticated = false;
+		},
+		checkAuth() {
+			return !!localStorage.getItem('id_token');
+		},
 		handleIconClick(e) {
 			console.log(e);
+		},
+		getTitle() {
+			axios.get('http://coolection.cyris.co/get-title/?url=' + this.input)
+				.then(titleResponse => {
+					if (titleResponse.data.substring(0,21) !== '<br />\n<b>Warning</b>') {
+						this.addTitle = titleResponse.data;
+						this.getTags();
+					} else {
+						this.addTitle = 'Error fetching website';
+					}
+				})
+		},
+		getTags() {
+			this.tagsLabel = 'GENERATING TAGS...';
+			axios.get('https://api.dandelion.eu/datatxt/nex/v1/?url=' + this.input + '&min_confidence=0.5&social=False&include=image%2Cabstract%2Ctypes%2Ccategories%2Clod&country=-1&token=' + token)
+			.then(entityResponse => {
+				this.tagsLabel = 'TAGS';
+				var entities = entityResponse.data.annotations;
+				entities.forEach(entity => {
+					this.tags.push(entity.title);
+				})
+			})
+		},
+		search() {
+			index.search(val, (err, content) => {
+				this.searchResults = [];
+				console.log(content);
+				content.hits.forEach(item => {
+					this.searchResults.push({
+						"value": item.name,
+						"url": "#"
+					})
+				})
+			});
+		},
+		add() {
+			this.addLoading = true;
+
+			var siteObj = [{
+				title: this.addTitle,
+				url: this.input,
+				tags: this.tags.toString()
+			}];
+
+			index.addObjects(siteObj, (err, content) => {
+				console.log(err);
+			});
 		},
 		showInputTag() {
 			this.inputTagVisible = true;
