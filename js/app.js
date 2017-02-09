@@ -48,8 +48,8 @@ var main = new Vue({
 		if (!this.authenticated)
 			this.login();
 		else {
-			token = JSON.parse(localStorage.getItem('profile')).app_metadata.token;
-			client = algoliasearch(JSON.parse(localStorage.getItem('profile')).app_metadata.applicationID, JSON.stringify(localStorage.getItem('profile')).app_metadata.apiKey);
+			token = JSON.parse(localStorage.getItem('profile')).appMetadata.token;
+			client = algoliasearch(JSON.parse(localStorage.getItem('profile')).appMetadata.applicationID, JSON.stringify(localStorage.getItem('profile')).appMetadata.apiKey);
 			index = client.initIndex(JSON.parse(localStorage.getItem('profile')).email);
 		}
 
