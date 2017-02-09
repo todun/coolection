@@ -48,9 +48,9 @@ var main = new Vue({
 		if (!this.authenticated)
 			this.login();
 		else {
-			token = JSON.stringify(profile).app_metadata.token;
-			client = algoliasearch(JSON.stringify(profile).app_metadata.applicationID, JSON.stringify(profile).app_metadata.apiKey);
-			index = client.initIndex(JSON.stringify(profile).email);
+			token = JSON.parse(localStorage.getItem('profile')).app_metadata.token;
+			client = algoliasearch(JSON.parse(localStorage.getItem('profile')).app_metadata.applicationID, JSON.stringify(localStorage.getItem('profile')).app_metadata.apiKey);
+			index = client.initIndex(JSON.parse(localStorage.getItem('profile')).email);
 		}
 
 		this.lock.on('authenticated', (authResult) => {
@@ -65,9 +65,9 @@ var main = new Vue({
 
 				this.authenticated = true;
 
-				token = JSON.stringify(profile).appMetadata.token;
-				client = algoliasearch(JSON.stringify(profile).appMetadata.applicationID, JSON.stringify(profile).appMetadata.apiKey);
-				index = client.initIndex(JSON.stringify(profile).email);
+				token = JSON.parse(profile).appMetadata.token;
+				client = algoliasearch(JSON.parse(profile).appMetadata.applicationID, JSON.parse(profile).appMetadata.apiKey);
+				index = client.initIndex(JSON.parse(profile).email);
 			});
 		});
 
