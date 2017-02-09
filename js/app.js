@@ -39,21 +39,7 @@ var main = new Vue({
 		this.lock.on('authenticated', (authResult) => {
 			localStorage.setItem('id_token', authResult.idToken);
 			localStorage.setItem('accessToken', authResult.accessToken);
-			// this.lock.getUserInfo(authResult.accessToken, (error, profile) => {
-			// 	if (error) {
-			// 		// Handle error
-			// 		return;
-			// 	}
-			// 	// Set the token and user profile in local storage
-			// 	localStorage.setItem('profile', JSON.stringify(profile));
-
-			// 	this.authenticated = true;
-
-			// 	token = JSON.parse(profile).appMetadata.token;
-			// 	client = algoliasearch(JSON.parse(profile).appMetadata.applicationID, JSON.parse(profile).appMetadata.apiKey);
-			// 	index = client.initIndex(JSON.parse(profile).email);
-			// 	this.userpic = JSON.parse(profile).pictureLarge;
-			// });
+			
 			this.getUserInfo();
 			this.lock.hide();
 		});
@@ -117,7 +103,7 @@ var main = new Vue({
 				token = JSON.parse(localStorage.getItem('profile')).appMetadata.token;
 				client = algoliasearch(JSON.parse(localStorage.getItem('profile')).appMetadata.applicationID, JSON.parse(localStorage.getItem('profile')).appMetadata.apiKey);
 				index = client.initIndex(JSON.parse(localStorage.getItem('profile')).email);
-				this.userpic = JSON.parse(localStorage.getItem('profile')).pictureLarge;
+				this.userpic = JSON.parse(localStorage.getItem('profile')).picture;
 			} else {
 				this.getUserInfo();
 			}
@@ -147,7 +133,7 @@ var main = new Vue({
 					})
 				}
 
-				this.userpic = profile.pictureLarge;
+				this.userpic = profile.picture;
 			});
 		},
 		handleIconClick(e) {
@@ -197,8 +183,28 @@ var main = new Vue({
 			}];
 
 			index.addObjects(siteObj, (err, content) => {
-				console.log(err);
+				if (err) {
+					swal({
+						title: "Error!",
+						text: err,
+						type: "error"
+					})
+				} else {
+					swal({
+						title: "Woohoo!",
+						text: "Your link has been successfully added."
+						type: "success",
+						showConfirmButton: false,
+						timer: 2000
+					})
+
+					this.clearAll();
+				}
 			});
+		},
+		clearAll() {
+			this.addLoading = false;
+			this.input = '';
 		},
 		showInputTag() {
 			this.inputTagVisible = true;
