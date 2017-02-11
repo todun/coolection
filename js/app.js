@@ -168,7 +168,8 @@ var main = new Vue({
 				content.hits.forEach(item => {
 					this.searchResults.push({
 						"title": item.title,
-						"url": item.url
+						"url": item.url,
+						"id": item.objectID
 					})
 				})
 			});
@@ -185,7 +186,7 @@ var main = new Vue({
 			index.addObjects(siteObj, (err, content) => {
 				if (err) {
 					swal({
-						title: "Error!",
+						title: "Failed to add",
 						text: err,
 						type: "error"
 					})
@@ -219,6 +220,51 @@ var main = new Vue({
 			}
 			this.inputTagVisible = false;
 			this.inputTagValue = '';
+		}
+	}
+})
+
+Vue.component('item', {
+	props: ['title', 'url', 'id'],
+	template: '<a :href="url" target="_blank">\
+					<el-card>\
+						{{title}}\
+						<a href="javascript:void(0);">\
+							<i @click="deleteItem()"class="el-icon-close"></i>\
+						</a>\
+						<span class="results-url">{{url}}</span>\
+					</el-card>\
+				</a>',
+	methods: {
+		deleteItem: function() {
+			swal({
+				title: "Are you sure?",
+				text: this.title + " will be deleted!",
+				type: "warning",
+				confirmButtonColor: "#e74c3c",
+				showCancelButton: true,
+				confirmButtonText: "Delete",
+				closeOnConfirm: false,
+				showLoaderOnConfirm: true
+			}, () => {
+				index.deleteObject(this.id, (err, content) => {
+					if (err) {
+						swal({
+							title: "Failed to delete",
+							text: err,
+							type: "error"
+						})
+					} else {
+						swal({
+							title: "Done!",
+							text: "Your link has been successfully deleted.",
+							type: "success",
+							showConfirmButton: false,
+							timer: 2000
+						})
+					}
+				})
+			})
 		}
 	}
 })
