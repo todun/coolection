@@ -262,6 +262,8 @@ Vue.component('item', {
 							showConfirmButton: false,
 							timer: 2000
 						})
+
+						main.search();
 					}
 				})
 			})
