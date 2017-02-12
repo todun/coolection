@@ -136,8 +136,7 @@ var main = new Vue({
 				this.userpic = profile.picture;
 			});
 		},
-		handleIconClick: function(e) {
-			console.log(e);
+		searchIconClick: function(e) {
 		},
 		getTitle: function() {
 			axios.get('/get-title/?url=' + this.input)
@@ -179,7 +178,8 @@ var main = new Vue({
 			var siteObj = [{
 				title: this.addTitle,
 				url: this.input,
-				tags: this.tags.toString()
+				tags: this.tags.toString(),
+				datetime: new Date()
 			}];
 
 			index.addObjects(siteObj, (err, content) => {

@@ -5,7 +5,7 @@ html, body {
 
 body {
 	margin: 0;
-	font-family: 'Titillium Web', sans-serif;
+	font-family: 'Nunito', sans-serif;
 	color: white;
 	background: linear-gradient(-135deg, #F89F76 0, #A83279 49%, #2C136C 100%);
 }
@@ -61,7 +61,7 @@ body {
 	border-radius: 20px;
 	font-size: 1.25em;
 	padding: 3px 20px;
-	font-family: 'Titillium Web', sans-serif;
+	font-family: 'Nunito', sans-serif;
 	font-weight: 300;
 	border: 1px solid #ecf0f1;
 }
@@ -93,6 +93,7 @@ body {
 .results-header, .add-header {
 	font-size: 1.5em;
 	font-weight: 200;
+	letter-spacing: 0.25px;
 }
 
 #results a {
@@ -103,10 +104,12 @@ body {
 	background-color: rgba(255,255,255,0.85);
 	color: #34495e;
 	margin: 2% 0;
+	-webkit-transition: all 0.5s ease;
+	transition: all 0.5s ease;
 }
 
 .el-card:hover {
-	/* hover animation */
+	background-color: #ECEEF1;
 }
 
 #results .el-icon-close {
@@ -127,6 +130,7 @@ body {
 
 .el-card__body {
 	padding: 15px 20px;
+	letter-spacing: 0.25px;
 }
 
 .results-url {
@@ -134,6 +138,7 @@ body {
 	font-size: 0.75em;
 	font-weight: 200;
 	letter-spacing: 0.5px;
+	padding-top: 2.5px;
 }
 
 /* Add */
