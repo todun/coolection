@@ -109,7 +109,7 @@ body {
 	/* hover animation */
 }
 
-.el-icon-close {
+#results .el-icon-close {
 	float: right;
 	font-size: 0.75em;
 	margin-top: 16px;
@@ -118,11 +118,15 @@ body {
 }
 
 .el-icon-close:hover {
-	color: #2c3e50;
+	color: #2c3e50 !important;
 }
 
 .el-card:hover .el-icon-close {
-	opacity: 1;
+	opacity: 1 !important;
+}
+
+.el-card__body {
+	padding: 15px 20px;
 }
 
 .results-url {

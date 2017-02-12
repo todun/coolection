@@ -81,15 +81,15 @@ var main = new Vue({
 		}
 	},
 	methods: {
-		login() {
+		login: function() {
 			this.lock.show();
 		},
-		logout() {
+		logout: function() {
 			localStorage.removeItem('id_token');
 			localStorage.removeItem('profile');
 			this.authenticated = false;
 		},
-		checkAuth() {
+		checkAuth: function() {
 			if (!!!localStorage.getItem('id_token'))
 				this.login();
 			else {
@@ -98,7 +98,7 @@ var main = new Vue({
 
 			return !!localStorage.getItem('id_token');
 		},
-		restoreSession() {
+		restoreSession: function() {
 			if (JSON.parse(localStorage.getItem('profile')).hasOwnProperty('appMetadata')) {
 				token = JSON.parse(localStorage.getItem('profile')).appMetadata.token;
 				client = algoliasearch(JSON.parse(localStorage.getItem('profile')).appMetadata.applicationID, JSON.parse(localStorage.getItem('profile')).appMetadata.apiKey);
@@ -108,7 +108,7 @@ var main = new Vue({
 				this.getUserInfo();
 			}
 		},
-		getUserInfo() {
+		getUserInfo: function() {
 			this.lock.getUserInfo(localStorage.getItem('accessToken'), (error, profile) => {
 				if (error) {
 					// Handle error
@@ -136,10 +136,10 @@ var main = new Vue({
 				this.userpic = profile.picture;
 			});
 		},
-		handleIconClick(e) {
+		handleIconClick: function(e) {
 			console.log(e);
 		},
-		getTitle() {
+		getTitle: function() {
 			axios.get('/get-title/?url=' + this.input)
 				.then(titleResponse => {
 					if (titleResponse.data.substring(0,21) !== '<br />\n<b>Warning</b>') {
@@ -150,7 +150,7 @@ var main = new Vue({
 					}
 				})
 		},
-		getTags() {
+		getTags: function() {
 			this.tagsLabel = 'GENERATING TAGS...';
 			axios.get('https://api.dandelion.eu/datatxt/nex/v1/?url=' + this.input + '&min_confidence=0.5&social=False&include=image%2Cabstract%2Ctypes%2Ccategories%2Clod&country=-1&token=' + token)
 			.then(entityResponse => {
@@ -161,10 +161,9 @@ var main = new Vue({
 				})
 			})
 		},
-		search() {
+		search: function() {
 			index.search(this.input, (err, content) => {
 				this.searchResults = [];
-				console.log(content);
 				content.hits.forEach(item => {
 					this.searchResults.push({
 						"title": item.title,
@@ -174,7 +173,7 @@ var main = new Vue({
 				})
 			});
 		},
-		add() {
+		add: function() {
 			this.addLoading = true;
 
 			var siteObj = [{
@@ -196,24 +195,24 @@ var main = new Vue({
 						text: "Your link has been successfully added.",
 						type: "success",
 						showConfirmButton: false,
-						timer: 2000
+						timer: 1500
 					})
 
 					this.clearAll();
 				}
 			});
 		},
-		clearAll() {
+		clearAll: function() {
 			this.addLoading = false;
 			this.input = '';
 		},
-		showInputTag() {
+		showInputTag: function() {
 			this.inputTagVisible = true;
 		},
-		removeTag(tag) {
+		removeTag: function(tag) {
 			this.tags.splice(this.tags.indexOf(tag), 1);
 		},
-		handleInputTagConfirm() {
+		handleInputTagConfirm: function() {
 			let inputTagValue = this.inputTagValue;
 			if (inputTagValue) {
 				this.tags.push(inputTagValue);
@@ -239,7 +238,7 @@ Vue.component('item', {
 		deleteItem: function() {
 			swal({
 				title: "Are you sure?",
-				text: this.title + " will be deleted!",
+				text: "This link will be deleted!",
 				type: "warning",
 				confirmButtonColor: "#e74c3c",
 				showCancelButton: true,
@@ -260,10 +259,13 @@ Vue.component('item', {
 							text: "Your link has been successfully deleted.",
 							type: "success",
 							showConfirmButton: false,
-							timer: 2000
+							timer: 1500
 						})
 
-						main.search();
+						for (var i = 0; i < main.searchResults.length; i++) {
+							if (main.searchResults[i].id === this.id)
+								main.searchResults.splice(i, 1);
+						}
 					}
 				})
 			})
