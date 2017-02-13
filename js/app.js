@@ -73,6 +73,7 @@ var main = new Vue({
 				this.mainboxShow = false;
 				this.addBoxShow = false;
 				this.resultBoxShow = false;
+				clearTimeout(this.timeout);
 			}
 		},
 		authenticated: function(val) {
