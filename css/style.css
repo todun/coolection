@@ -91,12 +91,8 @@ body {
 	height: 40px;
 }
 
-.input .el-input__inner:hover {
-	border-color: none;
-}
-
 .input .el-input__icon:hover+.el-input__inner {
-	border-color: none;
+	border-color: #ecf0f1;
 }
 
 .input .el-input:hover .el-input__icon {
@@ -211,12 +207,10 @@ body {
 }
 
 /* Mainbox Animation */
-.mainbox-enter-active {
+.mainbox-enter-active, .mainbox-leave-active {
 	transition: all .2s ease;
 }
-.mainbox-leave-active {
-	transition: all .2s ease;
-}
+
 .mainbox-enter, .mainbox-leave-to {
 	transform: translateY(5%);
 	opacity: 0;
