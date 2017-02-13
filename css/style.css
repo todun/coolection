@@ -30,9 +30,18 @@ body {
 	width: 100%
 }
 
-#menu>img {
+.logo.center {
+	width: 100%;
+	height: 100%;
+	transition: all .2s ease;
+}
+
+.logo>img {
 	height: 35%;
-	margin-left: 3%;
+}
+
+.logoleft {
+	margin-right: 80%;
 }
 
 .userpic {
@@ -204,6 +213,15 @@ body {
 .input-new-tag .el-input__inner {
 	height: 24px
 }
+
+/* Logo Animation */
+/*.logo-enter-active, .logo-leave-active {
+	transition: all .2s ease;
+}
+
+.logo-enter, .logo-leave-to {
+	transform: 
+}*/
 
 /* Mainbox Animation */
 .mainbox-enter-active, .mainbox-leave-active {

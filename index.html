@@ -15,7 +15,11 @@
 <body>
     <div id="main">
         <div id="menu" class="center-left">
-            <img src="img/sitelogo.png">
+            <!-- <transition name="logo"> -->
+                <div class="logo center" :class="{ logoleft: input }">
+                    <img src="img/sitelogo.png">
+                </div>
+            <!-- </transition> -->
             <div v-if="userpic" class="userpic">
                 <img :src="userpic">
             </div>
