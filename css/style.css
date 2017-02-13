@@ -30,10 +30,9 @@ body {
 	width: 100%
 }
 
-#menu>span {
-	font-size: 2em;
+#menu>img {
+	height: 35%;
 	margin-left: 3%;
-	font-weight: 700;
 }
 
 .userpic {
