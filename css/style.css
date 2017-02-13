@@ -53,12 +53,12 @@ body {
 	z-index: 9999;
 	position: absolute;
 	top: 45%;
-	transition: all 0.2s ease;
+	transition: all 0.3s ease;
 }
 
 .input>.el-input {
 	width: 70%;
-	transition: all 0.2s ease;
+	transition: all 0.3s ease;
 }
 
 .input .el-input__inner {
@@ -69,7 +69,7 @@ body {
 	font-family: 'Nunito', sans-serif;
 	font-weight: 300;
 	border: 1px solid #ecf0f1;
-	transition: all 0.2s ease;
+	transition: all 0.3s ease;
 }
 
 .input .el-input__icon {
@@ -91,24 +91,25 @@ body {
 	height: 40px;
 }
 
+.input .el-input__inner:hover {
+	border-color: none;
+}
+
+.input .el-input__icon:hover+.el-input__inner {
+	border-color: none;
+}
+
+.input .el-input:hover .el-input__icon {
+	color: #8391a5;
+}
+
 #mainbox {
-	/*display: block;*/
-	/*background: rgba(255,255,255,0.25);*/
-	/*bottom: 0;*/
-	/*position: absolute;*/
-	padding-top: 100px;
+	padding-top: 110px;
 	width: 100%;
-	/*margin-left: 12%;*/
-	/*height: 80%;*/
-	/*z-index: 1;*/
-	/*border-top-left-radius: 20px;*/
-	/*border-top-right-radius: 20px;*/
-	/*overflow-y: scroll;*/
 }
 
 /* Results */
 #results, #add {
-	/*margin: 11% 4%;*/
 	width: 75%;
 }
 
