@@ -3,7 +3,6 @@ var main = new Vue({
 	data: {
 		input: '',
 		timeout: null,
-		mainboxShow: false,
 		addBoxShow: false,
 		resultBoxShow: false,
 		searchResults: [],
@@ -51,28 +50,29 @@ var main = new Vue({
 	watch: {
 		input: function(val) {
 			if (val) {
-				this.mainboxShow = true;
 				this.tags = [];
 
 				clearTimeout(this.timeout);
 				this.timeout = setTimeout(() => {
 					if (this.input.substring(0,7) === 'http://' || this.input.substring(0,8) === 'https://') {
-						this.addBoxShow = true;
 						this.resultBoxShow = false;
+						this.addBoxShow = true;
 						this.addTitle = 'Fetching website...';
 						this.tagsLabel = '';
 
 						this.getTitle();
 					} else {
-						this.resultBoxShow = true;
+						this.searchResults = [];
 						this.addBoxShow = false;
+						this.resultBoxShow = true;
 						this.search();
 					}
 				}, 500)
 			} else {
-				this.mainboxShow = false;
+				this.searchResults = [];
 				this.addBoxShow = false;
 				this.resultBoxShow = false;
+				clearTimeout(this.timeout);
 			}
 		},
 		authenticated: function(val) {
