@@ -20,7 +20,7 @@
                 <img :src="userpic">
             </div>
         </div>
-        <div class="input center" v-if="authenticated">
+        <div class="input center" :class="{ top: input }" v-if="authenticated">
             <el-input
                 placeholder="Add Link or Search"
                 icon="search"
@@ -29,20 +29,25 @@
             </el-input>
         </div>
 
-        <transition name="mainbox-slide" v-if="authenticated">
-            <div id="mainbox" v-if="mainboxShow">
+        <!-- <div name="mainbox-slide" > -->
+        <div id="mainbox" class="center" v-if="authenticated">
+            <transition name="mainbox">
                 <div id="results" v-if="resultBoxShow">
                     <span class="results-header">
                         Search results for '{{input}}'...
                     </span>
-                    <div v-for="item in searchResults">
-                        <item
-                            :title="item.title"
-                            :url="item.url"
-                            :id="item.id">
-                        </item>
-                    </div>
+                    <transition-group name="search-item" tag="div">
+                        <div v-for="item in searchResults" key="item">
+                            <item
+                                :title="item.title"
+                                :url="item.url"
+                                :id="item.id">
+                            </item>
+                        </div>
+                    </transition-group>
                 </div>
+            </transition>
+            <transition name="mainbox">
                 <div id="add" v-if="addBoxShow">
                     <span class="add-header">
                         Add '{{input}}' into the database...
@@ -83,8 +88,9 @@
                         </div>
                     </el-card>
                 </div>
-            </div>
-        </transition>
+            </transition>
+        </div>
+        <!-- </div> -->
     </div>
 
     <script src="js/axios.min.js"></script>
