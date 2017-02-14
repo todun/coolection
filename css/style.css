@@ -168,6 +168,13 @@ body {
 	padding-top: 2.5px;
 }
 
+.no-results-label {
+	display: block;
+	padding-top: 2.5%;
+	letter-spacing: 1.5px;
+	font-weight: 600;
+}
+
 /* Add */
 .website-title {
 	font-weight: 600;

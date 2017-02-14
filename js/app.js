@@ -6,6 +6,7 @@ var main = new Vue({
 		addBoxShow: false,
 		resultBoxShow: false,
 		searchResults: [],
+		noResults: false,
 		addTitle: 'Fetching website...',
 		tagsLabel: '',
 		tags: [],
@@ -44,13 +45,14 @@ var main = new Vue({
 		});
 
 		this.lock.on('authorization_error', (error) => {
-			// handle error when authorizaton fails
+			// TODO: handle error when authorizaton fails
 		});
 	},
 	watch: {
 		input: function(val) {
 			if (val) {
 				this.tags = [];
+				this.noResults = false;
 
 				clearTimeout(this.timeout);
 				this.timeout = setTimeout(() => {
@@ -99,11 +101,12 @@ var main = new Vue({
 			return !!localStorage.getItem('id_token');
 		},
 		restoreSession: function() {
-			if (JSON.parse(localStorage.getItem('profile')).hasOwnProperty('appMetadata')) {
-				token = JSON.parse(localStorage.getItem('profile')).appMetadata.token;
-				client = algoliasearch(JSON.parse(localStorage.getItem('profile')).appMetadata.applicationID, JSON.parse(localStorage.getItem('profile')).appMetadata.apiKey);
-				index = client.initIndex(JSON.parse(localStorage.getItem('profile')).email);
-				this.userpic = JSON.parse(localStorage.getItem('profile')).picture;
+			var profile = JSON.parse(localStorage.getItem('profile'));
+			if (profile.hasOwnProperty('appMetadata')) {
+				token = profile.appMetadata.token;
+				client = algoliasearch(profile.appMetadata.applicationID, profile.appMetadata.apiKey);
+				index = client.initIndex(profile.email);
+				this.userpic = profile.picture;
 			} else {
 				this.getUserInfo();
 			}
@@ -111,10 +114,9 @@ var main = new Vue({
 		getUserInfo: function() {
 			this.lock.getUserInfo(localStorage.getItem('accessToken'), (error, profile) => {
 				if (error) {
-					// Handle error
 					return;
 				}
-				// Set the token and user profile in local storage
+
 				localStorage.setItem('profile', JSON.stringify(profile));
 
 				this.authenticated = true;
@@ -125,7 +127,7 @@ var main = new Vue({
 					index = client.initIndex(profile.email);
 				} else {
 					swal({
-						title: 'Hold on...',
+						title: 'Hang on...',
 						text: 'Account is currently pending approval. Check back soon!',
 						type: 'info',
 						allowEscapeKey: false,
@@ -156,20 +158,27 @@ var main = new Vue({
 				this.tagsLabel = 'TAGS';
 				var entities = entityResponse.data.annotations;
 				entities.forEach(entity => {
-					this.tags.push(entity.title);
+					// TODO: test this
+					if (!this.tags.contains(entity.title))
+						this.tags.push(entity.title);
 				})
 			})
 		},
 		search: function() {
 			index.search(this.input, (err, content) => {
 				this.searchResults = [];
-				content.hits.forEach(item => {
-					this.searchResults.push({
-						"title": item.title,
-						"url": item.url,
-						"id": item.objectID
+
+				if (content.hits.length) {
+					content.hits.forEach(item => {
+						this.searchResults.push({
+							"title": item.title,
+							"url": item.url,
+							"id": item.objectID
+						})
 					})
-				})
+				} else {
+					this.noResults = true;
+				}
 			});
 		},
 		add: function() {
@@ -182,6 +191,8 @@ var main = new Vue({
 				datetime: new Date()
 			}];
 
+			// TODO: look for link's existence before adding
+
 			index.addObjects(siteObj, (err, content) => {
 				if (err) {
 					swal({
@@ -191,7 +202,7 @@ var main = new Vue({
 					})
 				} else {
 					swal({
-						title: "Woohoo!",
+						title: "Coolected!",
 						text: "Your link has been successfully added.",
 						type: "success",
 						showConfirmButton: false,

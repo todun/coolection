@@ -39,6 +39,9 @@
                     <span class="results-header">
                         Search results for '{{input}}'...
                     </span>
+                    <span class="no-results-label" v-if="noResults">
+                        NO LINKS FOUND
+                    </span>
                     <transition-group name="search-item" tag="div">
                         <div v-for="item in searchResults" key="item">
                             <item
