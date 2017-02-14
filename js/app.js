@@ -158,7 +158,7 @@ var main = new Vue({
 				this.tagsLabel = 'TAGS';
 				var entities = entityResponse.data.annotations;
 				entities.forEach(entity => {
-					if (this.tags.indexOf(entity.title) !== -1)
+					if (this.tags.indexOf(entity.title) === -1)
 						this.tags.push(entity.title);
 				})
 			})
