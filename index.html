@@ -15,16 +15,14 @@
 <body>
     <div id="main">
         <div id="menu" class="center-left">
-            <!-- <transition name="logo"> -->
-                <div class="logo center" :class="{ logoleft: input }">
-                    <img src="img/sitelogo.png">
-                </div>
-            <!-- </transition> -->
+            <div class="logo center" :class="{ logoleft: input || scrolled }">
+                <img src="img/sitelogo.png">
+            </div>
             <div v-if="userpic" class="userpic">
                 <img :src="userpic">
             </div>
         </div>
-        <div class="input center" :class="{ top: input }" v-if="authenticated">
+        <div class="input center" :class="{ top: input || scrolled }" v-if="authenticated">
             <el-input
                 placeholder="Add Link or Search"
                 icon="search"

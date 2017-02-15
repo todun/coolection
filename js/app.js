@@ -3,6 +3,7 @@ var main = new Vue({
 	data: {
 		input: '',
 		timeout: null,
+		scrolled: false,
 		addBoxShow: false,
 		resultBoxShow: false,
 		searchResults: [],
@@ -47,6 +48,8 @@ var main = new Vue({
 		this.lock.on('authorization_error', (error) => {
 			// TODO: handle error when authorizaton fails
 		});
+
+		window.addEventListener('scroll', this.mainScroll);
 	},
 	watch: {
 		input: function(val) {
@@ -137,6 +140,12 @@ var main = new Vue({
 
 				this.userpic = profile.picture;
 			});
+		},
+		mainScroll: function() {
+			if (!this.input && window.scrollY > 0)
+				this.scrolled = true;
+			else if (!this.input && window.scrollY  === 0)
+				this.scrolled = false;
 		},
 		searchIconClick: function(e) {
 		},
