@@ -3,6 +3,7 @@ var main = new Vue({
 	data: {
 		input: '',
 		timeout: null,
+		scrolled: false,
 		addBoxShow: false,
 		resultBoxShow: false,
 		searchResults: [],
@@ -33,6 +34,14 @@ var main = new Vue({
 		username: '',
 		userpic: ''
 	},
+	computed: {
+		resultsLabel: function() {
+			if (!this.scrolled)
+				return 'Search results for ' + this.input + '...';
+			else
+				return 'Showing all links';
+		}
+	},
 	mounted: function() {
 		this.authenticated = this.checkAuth();
 
@@ -47,6 +56,8 @@ var main = new Vue({
 		this.lock.on('authorization_error', (error) => {
 			// TODO: handle error when authorizaton fails
 		});
+
+		window.addEventListener('scroll', this.mainScroll);
 	},
 	watch: {
 		input: function(val) {
@@ -80,6 +91,16 @@ var main = new Vue({
 		authenticated: function(val) {
 			if (!val)
 				this.login();
+		},
+		scrolled: function(val) {
+			if (val) {
+				this.searchResults = [];
+				this.search();
+				setTimeout(() => {
+					this.resultBoxShow = true;
+				}, 300)
+			} else
+				this.resultBoxShow = false;
 		}
 	},
 	methods: {
@@ -137,6 +158,13 @@ var main = new Vue({
 
 				this.userpic = profile.picture;
 			});
+		},
+		mainScroll: function() {
+			if (!this.input && window.scrollY >= 10 && !this.scrolled) {
+				this.scrolled = true;
+			} else if (!this.input && window.scrollY === 0 && this.scrolled) {
+				this.scrolled = false;
+			}
 		},
 		searchIconClick: function(e) {
 		},

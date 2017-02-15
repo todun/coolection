@@ -15,16 +15,14 @@
 <body>
     <div id="main">
         <div id="menu" class="center-left">
-            <!-- <transition name="logo"> -->
-                <div class="logo center" :class="{ logoleft: input }">
-                    <img src="img/sitelogo.png">
-                </div>
-            <!-- </transition> -->
+            <div class="logo center" :class="{ logoleft: input || scrolled }">
+                <img src="img/sitelogo.png">
+            </div>
             <div v-if="userpic" class="userpic">
                 <img :src="userpic">
             </div>
         </div>
-        <div class="input center" :class="{ top: input }" v-if="authenticated">
+        <div class="input center" :class="{ top: input || scrolled }" v-if="authenticated">
             <el-input
                 placeholder="Add Link or Search"
                 icon="search"
@@ -33,11 +31,18 @@
             </el-input>
         </div>
 
+        <transition name="list-all-arrow">
+            <div class="list-all-arrow" v-if="!input && !scrolled">
+                <span>ALL LINKS</span>
+                <i class="el-icon-arrow-down"></i>
+            </div>
+        </transition>
+
         <div id="mainbox" class="center" v-if="authenticated">
             <transition name="mainbox" mode="out-in">
                 <div id="results" v-if="resultBoxShow">
                     <span class="results-header">
-                        Search results for '{{input}}'...
+                        {{ resultsLabel }}
                     </span>
                     <span class="no-results-label" v-if="noResults">
                         NO LINKS FOUND

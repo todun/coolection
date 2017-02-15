@@ -1,6 +1,6 @@
 /* Global */
 html, body {
-	height: 100%;
+	height: 105%;
 }
 
 body {
@@ -110,6 +110,25 @@ body {
 #mainbox {
 	padding-top: 110px;
 	width: 100%;
+}
+
+/* List All Arrow */
+.list-all-arrow {
+	position: absolute;
+	bottom: 1%;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+	left: 0;
+	right: 0;
+}
+
+.list-all-arrow span {
+	display: block;
+	font-weight: 100;
+	font-size: 0.85em;
+	letter-spacing: 2px;
+	padding-bottom: 2px;
 }
 
 /* Results */
@@ -222,16 +241,17 @@ body {
 	height: 24px
 }
 
-/* Logo Animation */
-/*.logo-enter-active, .logo-leave-active {
+/* List All Arrow Transition */
+.list-all-arrow-enter-active, .list-all-arrow-leave-active {
 	transition: all .2s ease;
 }
 
-.logo-enter, .logo-leave-to {
-	transform: 
-}*/
+.list-all-arrow-enter, .list-all-arrow-leave-to {
+	transform: translateY(-30px);
+	opacity: 0;
+}
 
-/* Mainbox Animation */
+/* Mainbox Transition */
 .mainbox-enter-active, .mainbox-leave-active {
 	transition: all .2s ease;
 }
@@ -241,7 +261,7 @@ body {
 	opacity: 0;
 }
 
-/* Search Result Animation */
+/* Search Result Transition */
 .search-item-enter-active, .search-item-leave-active {
 	transition: all .2s ease;
 }
