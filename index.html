@@ -35,7 +35,7 @@
             <transition name="mainbox" mode="out-in">
                 <div id="results" v-if="resultBoxShow">
                     <span class="results-header">
-                        Search results for '{{input}}'...
+                        {{ resultsLabel }}
                     </span>
                     <span class="no-results-label" v-if="noResults">
                         NO LINKS FOUND
