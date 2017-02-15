@@ -108,7 +108,7 @@ body {
 }
 
 #mainbox {
-	padding-top: 110px;
+	padding-top: 130px;
 	width: 100%;
 }
 
@@ -125,7 +125,7 @@ body {
 
 .list-all-arrow span {
 	display: block;
-	font-weight: 100;
+	font-weight: 300;
 	font-size: 0.85em;
 	letter-spacing: 2px;
 	padding-bottom: 2px;
@@ -270,3 +270,4 @@ body {
 	opacity: 0;
 	transform: translateY(30px);
 }
+
