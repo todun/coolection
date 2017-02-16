@@ -202,6 +202,36 @@ body {
 	letter-spacing: 0.5px;
 }
 
+.title-edit {
+	width: 85%;
+}
+
+.title-edit .el-input__inner {
+	background: transparent;
+	border: none;
+	font-family: inherit;
+	font-weight: 600;
+	font-size: 1.43em;
+	letter-spacing: 0.5px;
+	padding: 0;
+	height: 27px;
+	border-radius: 0;
+	border-bottom: 1px solid #3498db;
+}
+
+.title-edit.placeholder .el-input__inner {
+	font-weight: 300;
+	font-size: 1.2em;
+	letter-spacing: 0.75px;
+}
+
+.website-title:hover {
+	background-color: rgba(52, 73, 94, 0.15);
+	border-radius: 2.5px;
+	padding: 2.5px 5px;
+	margin-left: -5px;
+}
+
 .submit-btn {
 	float: right;
 }

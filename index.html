@@ -66,7 +66,21 @@
                         Add '{{input}}' into the database...
                     </span>
                     <el-card>
-                        <span class="website-title">{{addTitle}}</span>
+                        <span
+                            class="website-title"
+                            v-if="!titleEdit"
+                            @click="editTitle">
+                            {{addTitle}}
+                        </span>
+                        <el-input
+                            class="title-edit"
+                            :class="{ placeholder: addTitle === 'Can\'t fetch title. Please enter title.' }"
+                            v-if="titleEdit"
+                            v-model="addTitle"
+                            @keyup.enter.native="handleTitleEditConfirm"
+                            @blur="handleTitleEditConfirm"
+                        >
+                        </el-input>
                         <el-button
                             v-if="addTitle !== 'Fetching website...' && addTitle !== 'Error fetching website'"
                             type="info submit-btn"

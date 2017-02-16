@@ -9,6 +9,7 @@ var main = new Vue({
 		searchResults: [],
 		noResults: false,
 		addTitle: 'Fetching website...',
+		titleEdit: false,
 		tagsLabel: '',
 		tags: [],
 		inputTagVisible: false,
@@ -166,13 +167,16 @@ var main = new Vue({
 				this.scrolled = false;
 			}
 		},
-		searchIconClick: function(e) {
-		},
 		getTitle: function() {
 			axios.get('https://coolection.cyris.co/get-title/?url=' + this.input)
 				.then(titleResponse => {
 					if (titleResponse.data.substring(0,21) !== '<br />\n<b>Warning</b>') {
-						this.addTitle = titleResponse.data;
+						if (titleResponse.data)
+							this.addTitle = titleResponse.data;
+						else {
+							this.addTitle = 'Can\'t fetch title. Please enter title.';
+							this.titleEdit = true;
+						}
 						this.getTags();
 					} else {
 						this.addTitle = 'Error fetching website';
@@ -227,6 +231,8 @@ var main = new Vue({
 						text: err,
 						type: "error"
 					})
+
+					this.addLoading = false;
 				} else {
 					swal({
 						title: "Coolected!",
@@ -247,6 +253,12 @@ var main = new Vue({
 		clearAll: function() {
 			this.addLoading = false;
 			this.input = '';
+		},
+		editTitle: function() {
+			this.titleEdit = true;
+		},
+		handleTitleEditConfirm: function() {
+			this.titleEdit = false;
 		},
 		showInputTag: function() {
 			this.inputTagVisible = true;
