@@ -169,7 +169,7 @@ var main = new Vue({
 		searchIconClick: function(e) {
 		},
 		getTitle: function() {
-			axios.get('/get-title/?url=' + this.input)
+			axios.get('https://coolection.cyris.co/get-title/?url=' + this.input)
 				.then(titleResponse => {
 					if (titleResponse.data.substring(0,21) !== '<br />\n<b>Warning</b>') {
 						this.addTitle = titleResponse.data;
@@ -239,6 +239,10 @@ var main = new Vue({
 					this.clearAll();
 				}
 			});
+		},
+		inputEnter: function() {
+			if (this.input.substring(0,7) === 'http://' || this.input.substring(0,8) === 'https://')
+				this.add();
 		},
 		clearAll: function() {
 			this.addLoading = false;

@@ -23,12 +23,16 @@
             </div>
         </div>
         <div class="input center" :class="{ top: input || scrolled }" v-if="authenticated">
-            <el-input
-                placeholder="Add Link or Search"
-                icon="search"
-                v-model="input"
-                :on-icon-click="searchIconClick">
-            </el-input>
+            <div class="el-input">
+                <i class="el-input__icon el-icon-search is-clickable"></i>
+                <input 
+                    type="text"
+                    placeholder="Add Link or Search" 
+                    autocomplete="off"
+                    class="el-input__inner"
+                    v-model="input"
+                    @keyup.enter="inputEnter">
+            </div>
         </div>
 
         <transition name="list-all-arrow">
