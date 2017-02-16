@@ -19,7 +19,6 @@ var main = new Vue({
 		secretThing: '',
 		lock: new Auth0Lock('rD5ao9chGoZwgA2GaV7mBe4JKuPSZZ6M', 'chriswong.auth0.com', {
 			closable: false,
-			autoclose: true,
 			languageDictionary: {
 				title: 'Login'
 			},
@@ -49,13 +48,13 @@ var main = new Vue({
 		this.lock.on('authenticated', (authResult) => {
 			localStorage.setItem('id_token', authResult.idToken);
 			localStorage.setItem('accessToken', authResult.accessToken);
-			
+
 			this.getUserInfo();
 			this.lock.hide();
 		});
 
 		this.lock.on('authorization_error', (error) => {
-			// TODO: handle error when authorizaton fails
+			console.log(error);
 		});
 
 		window.addEventListener('scroll', this.mainScroll);
@@ -136,7 +135,7 @@ var main = new Vue({
 		getUserInfo: function() {
 			this.lock.getUserInfo(localStorage.getItem('accessToken'), (error, profile) => {
 				if (error) {
-					return;
+					console.log(error);
 				}
 
 				localStorage.setItem('profile', JSON.stringify(profile));
