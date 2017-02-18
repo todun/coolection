@@ -24,7 +24,7 @@ var main = new Vue({
 			},
 			theme: {
 				labeledSubmitButton: false,
-				logo: '',
+				logo: 'img/logo-login.png',
 				primaryColor: '',
 			},
 			auth: {
