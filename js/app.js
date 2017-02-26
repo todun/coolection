@@ -178,7 +178,7 @@ var main = new Vue({
 						}
 						this.getTags();
 					} else {
-						this.addTitle = 'Error fetching website';
+						this.addTitle = 'Can\'t fetch website. Check if URL is valid.';
 					}
 				})
 		},
@@ -226,7 +226,7 @@ var main = new Vue({
 			index.addObjects(siteObj, (err, content) => {
 				if (err) {
 					swal({
-						title: "Failed to add",
+						title: "Failed to save",
 						text: err,
 						type: "error"
 					})
@@ -235,7 +235,7 @@ var main = new Vue({
 				} else {
 					swal({
 						title: "Coolected!",
-						text: "Your link has been successfully added.",
+						text: "Your link has been successfully saved.",
 						type: "success",
 						showConfirmButton: false,
 						timer: 1500
