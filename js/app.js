@@ -142,9 +142,9 @@ var main = new Vue({
 
 				this.authenticated = true;
 				
-				if (profile.hasOwnProperty('appMetadata')) {
-					token = profile.appMetadata.token;
-					client = algoliasearch(profile.appMetadata.applicationID, profile.appMetadata.apiKey);
+				if (profile.hasOwnProperty('app_metadata')) {
+					token = profile.app_metadata.token;
+					client = algoliasearch(profile.app_metadata.applicationID, profile.app_metadata.apiKey);
 					index = client.initIndex(profile.email);
 				} else {
 					swal({
