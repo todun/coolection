@@ -1,0 +1,25 @@
+{
+  "name": "coolection",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chriswongtv/coolection.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chriswongtv/coolection/issues"
+  },
+  "homepage": "https://github.com/chriswongtv/coolection#readme",
+  "dependencies": {
+    "aws-sdk": "^2.41.0",
+    "body-parser": "^1.17.1",
+    "cluster": "^0.7.7",
+    "express": "^4.15.2"
+  }
+}
