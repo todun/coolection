@@ -167,19 +167,17 @@ var main = new Vue({
 			}
 		},
 		getTitle: function() {
-			axios.get('https://coolection.cyris.co/get-title/?url=' + this.input)
+			axios.get('/api/getTitle?url=' + this.input)
 				.then(titleResponse => {
-					if (titleResponse.data.substring(0,21) !== '<br />\n<b>Warning</b>') {
-						if (titleResponse.data)
-							this.addTitle = titleResponse.data;
-						else {
-							this.addTitle = 'Can\'t fetch title. Please enter title.';
-							this.titleEdit = true;
-						}
-						this.getTags();
-					} else {
-						this.addTitle = 'Can\'t fetch website. Check if URL is valid.';
+					if (titleResponse.data === '') {
+						this.addTitle = 'Can\'t fetch title. Please enter title.';
+						this.titleEdit = true;
+					} else if (titleResponse.data) {
+						this.addTitle = titleResponse.data;
 					}
+
+					if (titleResponse.data !== "Can't fetch website. Check if URL is valid.")
+						this.getTags();
 				})
 		},
 		getTags: function() {
