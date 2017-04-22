@@ -20,7 +20,7 @@ var main = new Vue({
 		lock: new Auth0Lock('rD5ao9chGoZwgA2GaV7mBe4JKuPSZZ6M', 'chriswong.auth0.com', {
 			closable: false,
 			languageDictionary: {
-				title: 'Login'
+				title: ''
 			},
 			theme: {
 				labeledSubmitButton: false,
@@ -190,6 +190,19 @@ var main = new Vue({
 					if (this.tags.indexOf(entity.title) === -1)
 						this.tags.push(entity.title);
 				})
+
+				$('#tags').selectize({
+					delimiter: ',',
+					persist: false,
+					create: function(input) {
+						return {
+							value: input,
+							text: input
+						}
+					}
+				});
+
+				console.log($('#tags').selectize().getValue());
 			})
 		},
 		search: function() {
