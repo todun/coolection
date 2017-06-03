@@ -89,8 +89,8 @@
                             :loading="addLoading">
                             Add
                         </el-button>
-                        <input id="tags" type="text">
-                        <!-- <div id="tags" v-if="tagsLabel !== ''">
+                        <!-- <input id="tags" type="text"> -->
+                        <div id="tags" v-if="tagsLabel !== ''">
                             <span class="tags-header-label">{{tagsLabel}}</span>
                             <el-tag
                                 v-for="tag in tags"
@@ -114,7 +114,7 @@
                                 @click="showInputTag">
                                 + Add Tag
                             </el-button>
-                        </div> -->
+                        </div>
                     </el-card>
                 </div>
             </transition>
