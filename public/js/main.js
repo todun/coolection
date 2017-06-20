@@ -182,27 +182,30 @@ var main = new Vue({
 		},
 		getTags: function() {
 			this.tagsLabel = 'GENERATING TAGS...';
+
+			$('#input-tags').selectize({
+				delimiter: ',',
+				persist: false,
+				create: input => {
+					return {
+						value: input,
+						text: input
+					}
+				}
+			});
+
+			$("#input-tags")[0].selectize.disable();
+
 			axios.get('https://api.dandelion.eu/datatxt/nex/v1/?url=' + this.input + '&min_confidence=0.5&social=False&include=image%2Cabstract%2Ctypes%2Ccategories%2Clod&country=-1&token=' + token)
 			.then(entityResponse => {
 				this.tagsLabel = 'TAGS';
 				var entities = entityResponse.data.annotations;
 				entities.forEach(entity => {
-					if (this.tags.indexOf(entity.title) === -1)
-						this.tags.push(entity.title);
+					$("#input-tags")[0].selectize.addOption({ value: entity.title, text: entity.title });
+					$("#input-tags")[0].selectize.addItem(entity.title);
 				})
 
-				$('#tags').selectize({
-					delimiter: ',',
-					persist: false,
-					create: function(input) {
-						return {
-							value: input,
-							text: input
-						}
-					}
-				});
-
-				console.log($('#tags').selectize().getValue());
+				$("#input-tags")[0].selectize.enable();
 			})
 		},
 		search: function() {
@@ -225,10 +228,12 @@ var main = new Vue({
 		add: function() {
 			this.addLoading = true;
 
+			var tags = $("#input-tags")[0].selectize.getValue();
+
 			var siteObj = [{
 				title: this.addTitle,
 				url: this.input,
-				tags: this.tags.toString(),
+				tags: tags,
 				datetime: new Date()
 			}];
 

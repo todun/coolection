@@ -89,10 +89,10 @@
                             :loading="addLoading">
                             Add
                         </el-button>
-                        <!-- <input id="tags" type="text"> -->
-                        <div id="tags" v-if="tagsLabel !== ''">
+                        <div id="tags" v-show="tagsLabel !== ''">
                             <span class="tags-header-label">{{tagsLabel}}</span>
-                            <el-tag
+                            <input id="input-tags" type="text">
+                            <!-- <el-tag
                                 v-for="tag in tags"
                                 :closable="true"
                                 @close="removeTag(tag)">
@@ -113,7 +113,7 @@
                                 size="small"
                                 @click="showInputTag">
                                 + Add Tag
-                            </el-button>
+                            </el-button> -->
                         </div>
                     </el-card>
                 </div>
