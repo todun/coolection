@@ -108,6 +108,7 @@ var main = new Vue({
 			this.lock.show();
 		},
 		logout: function() {
+			this.lock.logout();
 			localStorage.removeItem('id_token');
 			localStorage.removeItem('profile');
 			this.authenticated = false;
@@ -122,19 +123,13 @@ var main = new Vue({
 			return !!localStorage.getItem('id_token');
 		},
 		restoreSession: function() {
-			var profile = JSON.parse(localStorage.getItem('profile'));
-			if (profile.hasOwnProperty('app_metadata')) {
-				token = profile.app_metadata.token;
-				client = algoliasearch(profile.app_metadata.applicationID, profile.app_metadata.apiKey);
-				index = client.initIndex(profile.email);
-				this.userpic = profile.picture;
-			} else {
-				this.getUserInfo();
-			}
+			this.getUserInfo();
 		},
 		getUserInfo: function() {
 			this.lock.getUserInfo(localStorage.getItem('accessToken'), (error, profile) => {
 				if (error) {
+					this.authenticated = false;
+					this.login();
 					console.log(error);
 				}
 
@@ -196,13 +191,12 @@ var main = new Vue({
 
 			$("#input-tags")[0].selectize.disable();
 
-			axios.get('https://api.dandelion.eu/datatxt/nex/v1/?url=' + this.input + '&min_confidence=0.5&social=False&include=image%2Cabstract%2Ctypes%2Ccategories%2Clod&country=-1&token=' + token)
-			.then(entityResponse => {
+			axios.get('/api/getTags?url=' + this.input)
+			.then(tags => {
 				this.tagsLabel = 'TAGS';
-				var entities = entityResponse.data.annotations;
-				entities.forEach(entity => {
-					$("#input-tags")[0].selectize.addOption({ value: entity.title, text: entity.title });
-					$("#input-tags")[0].selectize.addItem(entity.title);
+				tags.data.forEach(tag => {
+					$("#input-tags")[0].selectize.addOption({ value: tag, text: tag });
+					$("#input-tags")[0].selectize.addItem(tag);
 				})
 
 				$("#input-tags")[0].selectize.enable();

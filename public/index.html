@@ -92,28 +92,6 @@
                         <div id="tags" v-show="tagsLabel !== ''">
                             <span class="tags-header-label">{{tagsLabel}}</span>
                             <input id="input-tags" type="text">
-                            <!-- <el-tag
-                                v-for="tag in tags"
-                                :closable="true"
-                                @close="removeTag(tag)">
-                                {{tag}}
-                            </el-tag>
-                            <el-input
-                                class="input-new-tag"
-                                v-if="inputTagVisible"
-                                v-model="inputTagValue"
-                                size="mini"
-                                @keyup.enter.native="handleInputTagConfirm"
-                                @blur="handleInputTagConfirm"
-                            >
-                            </el-input>
-                            <el-button
-                                v-if="tagsLabel === 'TAGS' && !inputTagVisible"
-                                class="button-new-tag"
-                                size="small"
-                                @click="showInputTag">
-                                + Add Tag
-                            </el-button> -->
                         </div>
                     </el-card>
                 </div>
@@ -140,7 +118,7 @@
     <script src="js/element.min.js"></script>
     <script src="js/selectize.min.js"></script>
     <script src="js/algoliasearch.min.js"></script>
-    <script src="https://cdn.auth0.com/js/lock/10.11.0/lock.min.js"></script>
+    <script src="https://cdn.auth0.com/js/lock/11.5.1/lock.min.js"></script>
     <script src="js/sweetalert.min.js"></script>
     <script src="js/main.js"></script>
 </body>
