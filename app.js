@@ -21,21 +21,19 @@ app.get('/', function(req, res) {
 var port = process.env.PORT || 3000;
 
 var server = app.listen(port, function () {
-	console.log('Server running at http://127.0.0.1:' + port + '/');
+	console.log('Server running at http://localhost:' + port + '/');
 });
 
 app.get('/api/getTitle', function(req, res) {
 	var url = req.query.url;
 	if (validUrl.isUri(url)) {
-		request(url, function (error, response, body) 
-		{
-			if (!error && response.statusCode == 200) 
-			{
+		request(url, function (error, response, body) {
+			if (!error && response.statusCode == 200) {
 				var $ = cheerio.load(body);
 				var title = $("title").text();
 				res.send(title);
 			} else {
-				res.send("Can't fetch website. Check if URL is valid.");
+				res.send("Continue adding anyway.");
 			}
 		})
 	} else {
