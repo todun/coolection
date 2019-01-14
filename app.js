@@ -33,7 +33,7 @@ app.get('/api/getTitle', function(req, res) {
 				var title = $("title").text();
 				res.send(title);
 			} else {
-				res.send("Continue adding anyway.");
+				res.send("Can’t fetch URL details. Click to edit title.");
 			}
 		})
 	} else {
@@ -45,8 +45,9 @@ app.get('/api/getTags', function(req, res) {
 	var url = req.query.url;
 	if (validUrl.isUri(url)) {
 		request('https://api.dandelion.eu/datatxt/nex/v1/?url=' + url + '&min_confidence=0.5&social=False&include=image%2Cabstract%2Ctypes%2Ccategories%2Clod&country=-1&token=' + process.env.DANDELION_TOKEN, function (error, response, body) {
-			if (!error) {
-				var tags = [];
+			var tags = [];
+
+			if (response.statusCode === 200) {
 				JSON.parse(response.body).annotations.forEach(entity => {
 					if (tags.indexOf(entity.title) === -1)
 						tags.push(entity.title);
